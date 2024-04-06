@@ -7,7 +7,7 @@ using System;
 public class HerbMovement : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 7f;
+    private float speed = 5f;
     private bool facingRight = true;
     private float crouchTime;
     //private bool isPounceCharged;
@@ -17,7 +17,7 @@ public class HerbMovement : MonoBehaviour
     private Coroutine gravTimer;
 
     //[SerializeField] private TextMeshProUGUI timer_Txt;
-    [SerializeField] private float jumpingPower = 6f;
+    [SerializeField] private float jumpingPower = 10f;
     [SerializeField] private float pounceChargeTime;
     [SerializeField] private float sectionCurrentTime;
 
@@ -134,8 +134,8 @@ public class HerbMovement : MonoBehaviour
 
     private IEnumerator SetGravity()
     {
-        rb.gravityScale = 1.75f;
+        rb.gravityScale = 1.4f;
         yield return new WaitForSeconds(1.5f);
-        rb.gravityScale = 3.0f;
+        rb.gravityScale = 3f;
     }
 }
