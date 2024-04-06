@@ -36,6 +36,14 @@ public class HerbMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IsGrounded())
+        {
+            anim.SetBool("isInAir", false);
+        }
+        else
+        {
+            anim.SetBool("isInAir", true);
+        }
         horizontal = Input.GetAxisRaw("Horizontal");
         anim.SetFloat("MoveHorizontal", horizontal);
         if(horizontal != 0)
@@ -94,6 +102,7 @@ public class HerbMovement : MonoBehaviour
     void BeginTimer()
     {
         isTimerGoing = false;
+        anim.SetBool("isUsingSpace", false);
         if (coUpdateTimer != null)
         {
             StopCoroutine(coUpdateTimer);
@@ -101,13 +110,15 @@ public class HerbMovement : MonoBehaviour
 
         sectionCurrentTime = 0f;
         isTimerGoing = true;
+        anim.SetBool("isUsingSpace",true);
         coUpdateTimer = StartCoroutine(UpdateTimer());
     }
 
     void EndTimer()
     {
         isTimerGoing = false;
-        if(coUpdateTimer != null)
+        anim.SetBool("isUsingSpace",false);
+        if (coUpdateTimer != null)
         {
             StopCoroutine(coUpdateTimer);
         }
@@ -119,6 +130,7 @@ public class HerbMovement : MonoBehaviour
     {
         while (isTimerGoing && IsGrounded())
         {
+            
             sectionCurrentTime += Time.deltaTime;
             if(sectionCurrentTime >= pounceChargeTime) 
             {
@@ -126,6 +138,7 @@ public class HerbMovement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
                 gravTimer = StartCoroutine(SetGravity());
                 sectionCurrentTime = 0f;
+                anim.SetBool("isUsingSpace",false);
             }
 
             yield return null;
