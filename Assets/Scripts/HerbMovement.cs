@@ -11,9 +11,11 @@ public class HerbMovement : MonoBehaviour
     private float jumpingPower = 12f;
     private bool facingRight = true;
     private float crouchTime;
+    //private bool isPounceCharged;
 
     private bool isTimerGoing;
     private Coroutine coUpdateTimer;
+    private Coroutine gravTimer;
 
     //[SerializeField] private TextMeshProUGUI timer_Txt;
     [SerializeField] private float pounceChargeTime;
@@ -27,6 +29,7 @@ public class HerbMovement : MonoBehaviour
     void Start()
     {
         isTimerGoing = false;
+        //isPounceCharged = false;
         //timer_Txt.text = "00:00.0";
     }
 
@@ -57,6 +60,7 @@ public class HerbMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             BeginTimer();
+            
         }
         else if (Input.GetButtonUp("Jump"))
         {
@@ -107,21 +111,31 @@ public class HerbMovement : MonoBehaviour
         {
             StopCoroutine(coUpdateTimer);
         }
+        //isPounceCharged = false;
         sectionCurrentTime = 0f;
     }
 
     private IEnumerator UpdateTimer()
     {
-        while (isTimerGoing)
+        while (isTimerGoing && IsGrounded())
         {
             sectionCurrentTime += Time.deltaTime;
-            if(sectionCurrentTime >= pounceChargeTime && IsGrounded()) 
+            if(sectionCurrentTime >= pounceChargeTime) 
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpingPower*1.5f);
+                //isPounceCharged = true;
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                gravTimer = StartCoroutine(SetGravity());
                 sectionCurrentTime = 0f;
             }
 
             yield return null;
         }
+    }
+
+    private IEnumerator SetGravity()
+    {
+        rb.gravityScale = 1.0f;
+        yield return new WaitForSeconds(2);
+        rb.gravityScale = 3.0f;
     }
 }
