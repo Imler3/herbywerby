@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class HerbMovement : MonoBehaviour
 {
@@ -8,11 +10,25 @@ public class HerbMovement : MonoBehaviour
     private float speed = 7f;
     private float jumpingPower = 12f;
     private bool facingRight = true;
+    private float crouchTime;
+
+    private bool isTimerGoing;
+    private Coroutine coUpdateTimer;
+
+    //[SerializeField] private TextMeshProUGUI timer_Txt;
+    [SerializeField] private float pounceChargeTime;
+    [SerializeField] private float sectionCurrentTime;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator anim;
+
+    void Start()
+    {
+        isTimerGoing = false;
+        //timer_Txt.text = "00:00.0";
+    }
 
     // Update is called once per frame
     void Update()
@@ -29,12 +45,22 @@ public class HerbMovement : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
+        {            
+            //rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+        if (Input.GetButtonUp("Jump") && rb.velocity.y == 0f)
         {
+            //Debug.Log("Time: "+timer_Txt.text);
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+
+        if (Input.GetButtonDown("Jump"))
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            BeginTimer();
+        }
+        else if (Input.GetButtonUp("Jump"))
+        {
+            EndTimer();
         }
 
         Flip();
@@ -58,6 +84,44 @@ public class HerbMovement : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+        }
+    }
+
+    void BeginTimer()
+    {
+        isTimerGoing = false;
+        if (coUpdateTimer != null)
+        {
+            StopCoroutine(coUpdateTimer);
+        }
+
+        sectionCurrentTime = 0f;
+        isTimerGoing = true;
+        coUpdateTimer = StartCoroutine(UpdateTimer());
+    }
+
+    void EndTimer()
+    {
+        isTimerGoing = false;
+        if(coUpdateTimer != null)
+        {
+            StopCoroutine(coUpdateTimer);
+        }
+        sectionCurrentTime = 0f;
+    }
+
+    private IEnumerator UpdateTimer()
+    {
+        while (isTimerGoing)
+        {
+            sectionCurrentTime += Time.deltaTime;
+            if(sectionCurrentTime >= pounceChargeTime && IsGrounded()) 
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower*1.5f);
+                sectionCurrentTime = 0f;
+            }
+
+            yield return null;
         }
     }
 }
