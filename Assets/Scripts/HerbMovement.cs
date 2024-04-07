@@ -10,6 +10,7 @@ public class HerbMovement : MonoBehaviour
     private float speed = 5f;
     private bool facingRight = true;
     private float crouchTime;
+    private bool disabled;
     //private bool isPounceCharged;
 
     private bool isTimerGoing;
@@ -21,6 +22,7 @@ public class HerbMovement : MonoBehaviour
     [SerializeField] private float pounceChargeTime;
     [SerializeField] private float sectionCurrentTime;
 
+    [SerializeField] private GameManager gm;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -29,6 +31,7 @@ public class HerbMovement : MonoBehaviour
     void Start()
     {
         isTimerGoing = false;
+        disabled = false;
         //isPounceCharged = false;
         //timer_Txt.text = "00:00.0";
     }
@@ -62,10 +65,13 @@ public class HerbMovement : MonoBehaviour
         if (Input.GetButtonUp("Jump") && rb.velocity.y == 0f)
         {
             //Debug.Log("Time: "+timer_Txt.text);
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            if (!disabled)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            }
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !disabled)
         {
             BeginTimer();
             
@@ -80,7 +86,10 @@ public class HerbMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        if (!disabled)
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }
     }
 
     private bool IsGrounded()
@@ -150,5 +159,26 @@ public class HerbMovement : MonoBehaviour
         rb.gravityScale = 1.4f;
         yield return new WaitForSeconds(1.5f);
         rb.gravityScale = 3f;
+    }
+
+    public void TimeToDie()
+    {
+        StartCoroutine(deathOccurrance());
+    }
+
+    IEnumerator deathOccurrance()
+    {
+        if(gm != null)
+        {
+            //anim.SetBool("isDead", true);
+            disabled = true;
+            yield return new WaitForSeconds(1f);
+
+            gm.Respawn(gameObject);
+            yield return new WaitForSeconds(1f);
+            GetComponent<HerbHealth>().ResetHealth();
+            disabled = false;
+            //anim.SetBool("isDead", false);
+        }
     }
 }
