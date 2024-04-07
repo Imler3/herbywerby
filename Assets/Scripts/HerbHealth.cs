@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HerbHealth : MonoBehaviour
 {
-    private int maxHealth = 1;
     private int currentHealth;
     private HerbMovement herbMovement;
 

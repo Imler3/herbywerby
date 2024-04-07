@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShipMovement : MonoBehaviour
 {
-    public float moveSpeed = 3;
+    public float moveSpeed;
     // Start is called before the first frame update
     void Start()
     {
