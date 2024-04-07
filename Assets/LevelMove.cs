@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEnigine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelMove : MonoBehaviour
