@@ -170,15 +170,16 @@ public class HerbMovement : MonoBehaviour
     {
         if(gm != null)
         {
-            //anim.SetBool("isDead", true);
+            anim.SetBool("isDead", true);
             disabled = true;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
 
             gm.Respawn(gameObject);
+            anim.SetBool("isDead", false);
             yield return new WaitForSeconds(1f);
             GetComponent<HerbHealth>().ResetHealth();
             disabled = false;
-            //anim.SetBool("isDead", false);
+            
         }
     }
 }
