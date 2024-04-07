@@ -9,7 +9,7 @@ public class LevelMove : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.GetComponenet<HerbHealth>())
+        if(other.GetComponent<HerbHealth>())
         {
             SceneManager.LoadScene(sceneBuildIndex, LoadSceneMode.Single);
         }
