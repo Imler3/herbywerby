@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: d39b01a90283f1a4fbac6f04b72b7da9
+  - enabled: 1
+    path: Assets/Scenes/Cinematic.unity
+    guid: 2535b59a9105ee54f975974d91a3f7d2
+  - enabled: 1
     path: Assets/Scenes/Gameplay-Paint Tutorial.unity
     guid: a6291e356445c284d84e4bee2b0fa925
   - enabled: 1
@@ -20,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Gameplay- Shooter Game.unity
     guid: 112d28ecbaeac5843b24b77604f0a839
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: c1313e33e7caf7b4b9351009ce5dc26b
   m_configObjects: {}
