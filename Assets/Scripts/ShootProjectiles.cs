@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootProjectiles : MonoBehaviour
 {
     public GameObject projectilePrefab;
-    private float waitTime = 0.2f;
+    private float waitTime = 0.8f;
     private float timer = 0.0f;
     private int width, height;
     private float scrollBar = 1.0f;

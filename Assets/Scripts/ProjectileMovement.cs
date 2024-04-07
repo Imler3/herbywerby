@@ -17,4 +17,12 @@ public class ProjectileMovement : MonoBehaviour
         transform.Translate(Vector2.down * moveSpeed * Time.deltaTime);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Boundary")
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
